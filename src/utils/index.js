@@ -1,4 +1,8 @@
-const mapDBToModelSong = ({ id, title, performer }) => ({
+const mapDBToModelSong = ({
+  id,
+  title,
+  performer,
+}) => ({
   id,
   title,
   performer,

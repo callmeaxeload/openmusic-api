@@ -3,9 +3,9 @@ const { nanoid } = require('nanoid');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 
-class AlbumsService {
+class AlbumService {
   constructor() {
-    this.pool = new Pool();
+    this._pool = new Pool();
   }
 
   async addAlbum({ name, year }) {
@@ -16,11 +16,9 @@ class AlbumsService {
     };
 
     const result = await this._pool.query(query);
-
     if (!result.rows[0].id) {
-      throw new InvariantError('Album fail to added');
+      throw new InvariantError('Album gagal ditambahkan');
     }
-
     return result.rows[0].id;
   }
 
@@ -31,14 +29,14 @@ class AlbumsService {
     };
 
     const songQuery = {
-      text: 'SELECT id, title, performer FROM songs WHERE albumId = $1',
+      text: 'SELECT id, title, performer FROM songs WHERE "albumId" = $1',
       values: [id],
     };
 
     const result = await this._pool.query(query);
     const resultSongs = await this._pool.query(songQuery);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Album not found');
     }
 
@@ -49,19 +47,18 @@ class AlbumsService {
       year: album.year,
       songs: resultSongs.rows,
     };
+
     return allResult;
   }
 
   async editAlbumById(id, { name, year }) {
     const query = {
-      text: 'UPDATE albums SET name = $1, year = $2,WHERE id = $3 RETURNING id',
+      text: 'UPDATE albums SET name = $1, year = $2 WHERE id = $3 RETURNING id',
       values: [name, year, id],
     };
-
     const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Failed update album. Id not found');
+    if (!result.rowCount) {
+      throw new NotFoundError('Failed to edit album. Id not found');
     }
   }
 
@@ -70,13 +67,11 @@ class AlbumsService {
       text: 'DELETE FROM albums WHERE id = $1 RETURNING id',
       values: [id],
     };
-
     const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Fail to delete album. Id not found');
+    if (!result.rowCount) {
+      throw new NotFoundError('Failed to delete album. Id not found');
     }
   }
 }
 
-module.exports = AlbumsService;
+module.exports = AlbumService;

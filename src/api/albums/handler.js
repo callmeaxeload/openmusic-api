@@ -1,21 +1,16 @@
+const autoBind = require('auto-bind');
+
 class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
-    this.postAlbumHandler = this.postAlbumHandler.bind(this);
-    this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
-    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
-    this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
+    autoBind(this);
   }
 
   async postAlbumHandler(request, h) {
     this._validator.validateAlbumPayload(request.payload);
     const { name, year } = request.payload;
-    const albumId = await this._service.addAlbum({
-      name,
-      year,
-    });
-
+    const albumId = await this._service.addAlbum({ name, year });
     const response = h.response({
       status: 'success',
       message: 'Album successfully added',
@@ -23,7 +18,6 @@ class AlbumsHandler {
         albumId,
       },
     });
-
     response.code(201);
     return response;
   }
@@ -33,7 +27,9 @@ class AlbumsHandler {
     const album = await this._service.getAlbumById(id);
     const response = h.response({
       status: 'success',
-      data: { album },
+      data: {
+        album,
+      },
     });
     response.code(200);
     return response;
@@ -45,7 +41,7 @@ class AlbumsHandler {
     await this._service.editAlbumById(id, request.payload);
     const response = h.response({
       status: 'success',
-      message: 'Album has been successfully updated',
+      message: 'Album successfully updated',
     });
     response.code(200);
     return response;
@@ -53,10 +49,10 @@ class AlbumsHandler {
 
   async deleteAlbumByIdHandler(request, h) {
     const { id } = request.params;
-    await this._service.deleteAlbum(id);
+    await this._service.deleteAlbumById(id);
     const response = h.response({
       status: 'success',
-      message: 'Album has been successfully deleted',
+      message: 'Album successfully deleted',
     });
     response.code(200);
     return response;
