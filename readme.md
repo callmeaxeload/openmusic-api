@@ -12,12 +12,6 @@ Proyek ini dibangun sebagai proyek pertama di kelas [Belajar Fundamental Aplikas
 - Penanganan Eror (Error Handling).
 - Menggunakan Database dalam Menyimpan Data album dan lagu.
 
-## Kriteria Tambahan (Opsional)
-
-1. (Opsional) Memunculkan daftar lagu di dalam detail album.
-2. (Opsional) Menerapkan query parameter untuk pencarian lagu pada endpoint **GET /songs**.
-    - ```?title```: mencari lagu berdasarkan judul lagu.
-    - ```?performer```: mencari lagu berdasarkan performer.
 
 ## Jalankan di Lokal
 
@@ -28,6 +22,4 @@ Proyek ini dibangun sebagai proyek pertama di kelas [Belajar Fundamental Aplikas
 
 ## Informasi
 
-Rating : ⭐⭐⭐⭐⭐
-
-Dokumen Pendukung : [Sertifikat](https://www.dicoding.com/certificates/4EXGKQNW1ZRL)
+Rating : ⭐⭐⭐⭐
