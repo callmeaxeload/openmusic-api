@@ -12,10 +12,26 @@ Proyek ini dibangun sebagai proyek pertama di kelas [Belajar Fundamental Aplikas
 - Penanganan Eror (Error Handling).
 - Menggunakan Database dalam Menyimpan Data album dan lagu.
 
+## Kriteria Tambahan (Opsional)
+
+1. (Opsional) Memunculkan daftar lagu di dalam detail album.
+2. (Opsional) Menerapkan query parameter untuk pencarian lagu pada endpoint **GET /songs**.
+    - ```?title```: mencari lagu berdasarkan judul lagu.
+    - ```?performer```: mencari lagu berdasarkan performer.
 
 ## Jalankan di Lokal
 
 1. Clone repository.
 2. Install dependencies dengan menjalankan perintah ```npm install```.
 3. Atur setting environtment sesuai format pada file ```.env.example```.
+<<<<<<< HEAD
 4. Gunakan perintah ```npm run start``` untuk menjalankan di lokal.
+=======
+4. Gunakan perintah ```npm run start``` untuk menjalankan di lokal.
+
+## Informasi
+
+Rating : ⭐⭐⭐⭐⭐
+
+Dokumen Pendukung : [Sertifikat](https://www.dicoding.com/certificates/4EXGKQNW1ZRL)
+>>>>>>> parent of 310eafa (FInal commit)
