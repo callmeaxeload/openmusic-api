@@ -25,9 +25,3 @@ Proyek ini dibangun sebagai proyek pertama di kelas [Belajar Fundamental Aplikas
 2. Install dependencies dengan menjalankan perintah ```npm install```.
 3. Atur setting environtment sesuai format pada file ```.env.example```.
 4. Gunakan perintah ```npm run start``` untuk menjalankan di lokal.
-
-## Informasi
-
-Rating : ⭐⭐⭐⭐⭐
-
-Dokumen Pendukung : [Sertifikat](https://www.dicoding.com/certificates/4EXGKQNW1ZRL)
