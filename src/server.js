@@ -44,7 +44,9 @@ const init = async () => {
   const usersService = new UsersService();
 
   const server = Hapi.server({
+    // eslint-disable-next-line no-undef
     port: process.env.PORT,
+    // eslint-disable-next-line no-undef
     host: process.env.HOST,
     routes: {
       cors: {
