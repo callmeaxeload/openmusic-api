@@ -1,0 +1,36 @@
+/**
+ * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
+ */
+exports.shorthands = undefined;
+
+/**
+ * @param pgm {import('node-pg-migrate').MigrationBuilder}
+ * @param run {() => void | undefined}
+ * @returns {Promise<void> | void}
+ */
+exports.up = (pgm) => {
+  pgm.sql(
+    "INSERT INTO users(id, username, password, fullname) VALUES ('old_playlists', 'old_playlists', 'old_playlists', 'old playlists')",
+  );
+
+  pgm.sql("UPDATE playlists SET owner = 'old_playlists' WHERE owner = NULL");
+
+  pgm.addConstraint(
+    'playlists',
+    'fk_playlists.owner_users.id',
+    'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE',
+  );
+};
+
+/**
+ * @param pgm {import('node-pg-migrate').MigrationBuilder}
+ * @param run {() => void | undefined}
+ * @returns {Promise<void> | void}
+ */
+exports.down = (pgm) => {
+  pgm.dropConstraint('playlists', 'fk_playlists.owner_users.id');
+
+  pgm.sql("UPDATE playlists SET owner = NULL WHERE owner = 'old_playlists'");
+
+  pgm.sql("DELETE FROM users WHERE id = 'old_playlists'");
+};
