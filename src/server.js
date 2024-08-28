@@ -82,29 +82,6 @@ const init = async () => {
       },
     },
     {
-      plugin: authentications,
-      options: {
-        authenticationsService,
-        usersService,
-        tokenManager: TokenManager,
-        validator: AuthenticationsValidator,
-      },
-    },
-    {
-      plugin: collaborations,
-      options: {
-        service: collaborationsService,
-        validator: CollaborationsValidator,
-      },
-    },
-    {
-      plugin: playlists,
-      options: {
-        service: playlistsService,
-        validator: PlaylistsValidator,
-      },
-    },
-    {
       plugin: songs,
       options: {
         service: songsService,
@@ -130,7 +107,9 @@ const init = async () => {
     {
       plugin: playlists,
       options: {
-        service: playlistsService,
+        playlistsService,
+        songsService,
+        activitiesService,
         validator: PlaylistsValidator,
       },
     },
