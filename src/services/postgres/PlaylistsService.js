@@ -17,7 +17,7 @@ class PlaylistsService {
       values: [id, name, owner],
     };
     const result = await this._poll.query(query);
-    if (!result.rows[0].id) {
+    if (!result.rowCount) {
       throw new InvariantError('Playlist failed to add');
     }
     return result.rows[0].id;
