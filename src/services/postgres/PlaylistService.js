@@ -20,7 +20,7 @@ class PlaylistService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('Playlist gagal ditambahkan');
+      throw new InvariantError('Playlist failed to added');
     }
 
     return result.rows[0].id;
@@ -51,7 +51,7 @@ class PlaylistService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError('Playlist gagal dihapus, Id tidak ditemukan');
+      throw new NotFoundError('Playlist failed to delete. Id not found');
     }
   }
 
@@ -65,7 +65,7 @@ class PlaylistService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('Lagu gagal ditambahkan ke playlist');
+      throw new InvariantError('Song failed to added to playlist');
     }
   }
 
@@ -87,7 +87,7 @@ class PlaylistService {
     const resultSongs = await this._pool.query(songQuery);
 
     if (!result.rowCount) {
-      throw new NotFoundError('Playlist tidak ditemukan');
+      throw new NotFoundError('Playlist not found');
     }
 
     const playlist = result.rows[0];
@@ -110,7 +110,7 @@ class PlaylistService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('Lagu gagal dihapus dari playlist');
+      throw new InvariantError('Song failed to delete from playlist');
     }
   }
 
@@ -123,11 +123,11 @@ class PlaylistService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError('Playlist tidak ditemukan');
+      throw new NotFoundError('Playlist not found');
     }
 
     if (result.rows[0].owner !== userId) {
-      throw new AuthorizationError('Anda tidak memiliki akses ke playlist ini');
+      throw new AuthorizationError('You do not have permission to access this playlist');
     }
   }
 

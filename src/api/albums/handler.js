@@ -15,7 +15,7 @@ class AlbumsHandler {
     const albumId = await this._service.addAlbum({ name, year });
     const response = h.response({
       status: 'success',
-      message: 'Album berhasil ditambahkan',
+      message: 'Album successfully added',
       data: {
         albumId,
       },
@@ -43,7 +43,7 @@ class AlbumsHandler {
     await this._service.editAlbumById(id, request.payload);
     const response = h.response({
       status: 'success',
-      message: 'Album berhasil diperbarui',
+      message: 'Album successfully updated',
     });
     response.code(200);
     return response;
@@ -54,7 +54,7 @@ class AlbumsHandler {
     await this._service.deleteAlbumById(id);
     const response = h.response({
       status: 'success',
-      message: 'Album berhasil dihapus',
+      message: 'Album successfully deleted',
     });
     response.code(200);
     return response;

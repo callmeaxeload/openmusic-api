@@ -23,7 +23,7 @@ class PlaylistsHandler {
     });
     const response = h.response({
       status: 'success',
-      message: 'Playlist berhasil ditambahkan',
+      message: 'Playlist successfully added',
       data: {
         playlistId,
       },
@@ -52,7 +52,7 @@ class PlaylistsHandler {
     await this._playlistsService.deletePlaylistById(id);
     const response = h.response({
       status: 'success',
-      message: 'Playlist berhasil dihapus',
+      message: 'Playlist successfully deleted',
     });
     response.code(200);
     return response;
@@ -79,7 +79,7 @@ class PlaylistsHandler {
 
     const response = h.response({
       status: 'success',
-      message: 'Lagu berhasil ditambahkan ke playlist',
+      message: 'Song successfully added to playlist',
     });
     response.code(201);
     return response;
@@ -125,7 +125,7 @@ class PlaylistsHandler {
 
     const response = h.response({
       status: 'success',
-      message: 'Playlist berhasil dihapus',
+      message: 'Song successfully deleted from playlist',
     });
     response.code(200);
     return response;
