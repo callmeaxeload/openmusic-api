@@ -12,6 +12,7 @@ class PlaylistSongActivitiesHandler {
 
     await this._playlistsService.verifyPlaylistOwner(id, credentialId);
     const { playlistId, activities } = await this._activitiesService.getPlaylistSongActivities(id);
+
     const response = h.response({
       status: 'success',
       data: {

@@ -12,20 +12,10 @@ class SongsHandler {
 
   async postSongHandler(request, h) {
     this._validator.validateSongPayload(request.payload);
-    const {
-      title, year, genre, performer, duration, albumId,
-    } = request.payload;
-    const songId = await this._service.addSong({
-      title,
-      year,
-      genre,
-      performer,
-      duration,
-      albumId,
-    });
+    const songId = await this._service.addSong(request.payload);
     const response = h.response({
       status: 'success',
-      message: 'Song successfully added',
+      message: 'Lagu berhasil ditambahkan',
       data: {
         songId,
       },
@@ -66,7 +56,7 @@ class SongsHandler {
     await this._service.editSongById(id, request.payload);
     const response = h.response({
       status: 'success',
-      message: 'Song successfully updated',
+      message: 'Lagu berhasil diperbarui',
     });
     response.code(200);
     return response;
@@ -77,7 +67,7 @@ class SongsHandler {
     await this._service.deleteSongById(id);
     const response = h.response({
       status: 'success',
-      message: 'Song successfully deleted',
+      message: 'Lagu berhasil dihapus',
     });
     response.code(200);
     return response;

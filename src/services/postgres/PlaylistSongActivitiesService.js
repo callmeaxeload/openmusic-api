@@ -6,18 +6,16 @@ class PlaylistSongActivitiesService {
     this._pool = new Pool();
   }
 
-  async addPlaylistSongActivities({
-    playlistId,
-    songId,
-    userId,
-    action,
-    time,
+  async addPlaylistSongActivities(playlistId, {
+    songId, userId, action, time,
   }) {
-    const id = `activity-${nanoid(16)}`;
+    const id = `action-${nanoid(16)}`;
+
     const query = {
       text: 'INSERT INTO playlist_song_activities VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
       values: [id, playlistId, songId, userId, action, time],
     };
+
     await this._pool.query(query);
   }
 
@@ -34,8 +32,7 @@ class PlaylistSongActivitiesService {
     const result = await this._pool.query(query);
 
     return {
-      playlistId,
-      activities: result.rows,
+      playlistId, activities: result.rows,
     };
   }
 }
