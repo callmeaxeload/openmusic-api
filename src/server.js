@@ -4,7 +4,6 @@ const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const Inert = require('@hapi/inert');
-const path = require('path');
 const ClientError = require('./exceptions/ClientError');
 
 const albums = require('./api/albums');
@@ -36,17 +35,8 @@ const CollaborationsValidator = require('./validator/collaborations');
 const CollaborationService = require('./services/postgres/CollaborationService');
 
 const _exports = require('./api/exports');
-const ProducerService = require('./services/rabbitmq/ProducerService');
 const ExportsValidator = require('./validator/exports');
-
-const uploads = require('./api/uploads');
-const StorageService = require('./services/storage/StorageService');
-const UploadsValidator = require('./validator/uploads');
-
-const albumLikes = require('./api/album-likes');
-const AlbumLikesService = require('./services/postgres/AlbumLikesService');
-
-const CacheService = require('./services/redis/CacheService');
+const ProducerService = require('./services/rabbitmq/ProducerService');
 
 const init = async () => {
   const albumsService = new AlbumService();
@@ -56,11 +46,6 @@ const init = async () => {
   const collaborationsService = new CollaborationService();
   const playlistsService = new PlaylistService(collaborationsService);
   const activitiesService = new PlaylistSongActivitiesService();
-  const storageService = new StorageService(
-    path.resolve(__dirname, 'api/uploads/file/images'),
-  );
-  const cacheService = new CacheService();
-  const albumLikesService = new AlbumLikesService(cacheService);
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -151,6 +136,14 @@ const init = async () => {
         playlistsService,
         usersService,
         validator: CollaborationsValidator,
+      },
+    },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        validator: ExportsValidator,
+        playlistsService,
       },
     },
   ]);
