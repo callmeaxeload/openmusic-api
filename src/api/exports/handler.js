@@ -1,8 +1,12 @@
+const PlaylistService = require('../../services/postgres/PlaylistService');
+
 class ExportsHandler {
-  constructor(service, validator, playlistService) {
+  constructor(service, validator, collaborationsService) {
     this._service = service;
     this._validator = validator;
-    this._playlistService = playlistService;
+    this._playlistService = new PlaylistService(collaborationsService);
+
+    this.postExportPlaylistHandler = this.postExportPlaylistHandler.bind(this);
   }
 
   async postExportPlaylistHandler(request, h) {
