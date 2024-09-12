@@ -33,20 +33,7 @@ const PlaylistSongActivitiesService = require('./services/postgres/PlaylistSongA
 
 const collaborations = require('./api/collaborations');
 const CollaborationsValidator = require('./validator/collaborations');
-const CollaborationsService = require('./services/postgres/CollaborationsService');
-
-const _exports = require('./api/exports');
-const ExportsValidator = require('./validator/exports');
-const ProducerService = require('./services/rabbitmq/ProducerService');
-
-const uploads = require('./api/uploads');
-const StorageService = require('./services/storage/StorageService');
-const UploadsValidator = require('./validator/uploads');
-
-const albumLikes = require('./api/album-likes');
-const AlbumLikesService = require('./services/postgres/AlbumLikesService');
-
-const CacheService = require('./services/redis/CacheService');
+const CollaborationService = require('./services/postgres/CollaborationService');
 
 const init = async () => {
   const albumsService = new AlbumsService();
@@ -151,27 +138,6 @@ const init = async () => {
         playlistsService,
         usersService,
         validator: CollaborationsValidator,
-      },
-    },
-    {
-      plugin: _exports,
-      options: {
-        service: ProducerService,
-        validator: ExportsValidator,
-      },
-    },
-    {
-      plugin: uploads,
-      options: {
-        service: storageService,
-        validator: UploadsValidator,
-      },
-    },
-    {
-      plugin: albumLikes,
-      options: {
-        service: albumLikesService,
-        albumsService,
       },
     },
   ]);
