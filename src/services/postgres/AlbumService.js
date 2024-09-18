@@ -45,6 +45,7 @@ class AlbumService {
       id: album.id,
       name: album.name,
       year: album.year,
+      coverUrl: album.cover_url,
       songs: resultSongs.rows,
     };
 
@@ -73,14 +74,30 @@ class AlbumService {
     }
   }
 
-  async addAlbumCover(albumId, coverUrl) {
-    const query = {
-      text: 'UPDATE albums SET cover = $1 WHERE id = $2 RETURNING id',
-      values: [coverUrl, albumId],
+  async updateAlbumCoverUrl({ id, url }) {
+    // Check if the album exists
+    const selctQuery = {
+      text: 'SELECT * FROM albums WHERE id = $1',
+      values: [id],
     };
+
+    const selectResult = await this._pool.query(selctQuery);
+
+    if (selectResult.rowCount === 0) {
+      throw new NotFoundError('Album not found');
+    }
+
+    // Update the cover URL
+    const updatedAt = new Date(Date.now());
+    const query = {
+      text: 'UPDATE albums SET cover_url=$2, updated_at = $3 WHERE id = $1',
+      values: [id, url, updatedAt],
+    };
+
     const result = await this._pool.query(query);
+
     if (!result.rowCount) {
-      throw new NotFoundError('Failed to add album cover. Id not found');
+      throw new Error('Failed to update album cover');
     }
   }
 }

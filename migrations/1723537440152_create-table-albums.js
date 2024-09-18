@@ -12,9 +12,9 @@ exports.up = (pgm) => {
       type: 'INTEGER',
       notNull: true,
     },
-    cover: {
-      type: 'varchar(255)',
-      onDelete: 'CASCADE',
+    created_at: {
+      type: 'bigint',
+      notNull: true,
     },
   });
 };

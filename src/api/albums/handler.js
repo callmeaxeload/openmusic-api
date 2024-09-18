@@ -1,12 +1,13 @@
+const autoBind = require('auto-bind');
+const config = require('../../utils/config');
+
 class AlbumsHandler {
-  constructor(service, validator) {
+  constructor(service, validator, storageService) {
     this._service = service;
     this._validator = validator;
+    this._storageService = storageService;
 
-    this.postAlbumHandler = this.postAlbumHandler.bind(this);
-    this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
-    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
-    this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
+    autoBind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -57,6 +58,27 @@ class AlbumsHandler {
       message: 'Album successfully deleted',
     });
     response.code(200);
+    return response;
+  }
+
+  async postCoverHandler(request, h) {
+    const { id } = request.params;
+    const { cover } = request.payload;
+
+    this._validator.validateImageHeaders(cover.hapi.headers);
+
+    const filename = await this._storageService.writeFile(cover, cover.hapi);
+
+    await this._service.updateAlbumCoverUrl({
+      id,
+      url: `http://${config.app.host}:${config.app.port}/albums/covers/${filename}`,
+    });
+
+    const response = h.response({
+      status: 'success',
+      message: 'Cover successfully uploaded',
+    });
+    response.code(201);
     return response;
   }
 }
