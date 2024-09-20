@@ -81,6 +81,51 @@ class AlbumsHandler {
     response.code(201);
     return response;
   }
+
+  async postAlbumLikesHandler(request, h) {
+    const { id: albumId } = request.params;
+    const { id: userId } = request.auth.credentials;
+
+    await this._service.getAlbumById(albumId);
+    await this._service.addAlbumLikes(albumId, userId);
+
+    const response = h.response({
+      status: 'success',
+      message: 'Album liked successfully',
+    });
+    response.code(201);
+    return response;
+  }
+
+  async deleteAlbumLikesHandler(request, h) {
+    const { id: albumId } = request.params;
+    const { id: userId } = request.auth.credentials;
+
+    await this._service.getAlbumById(albumId);
+    await this._service.doUnlikeAlbum(albumId, userId);
+
+    const response = h.response({
+      status: 'success',
+      message: 'Album unliked successfully',
+    });
+    response.code(200);
+    return response;
+  }
+
+  async getAlbumLikesHandler(request, h) {
+    const { id: albumId } = request.params;
+    const { likes, isCache = 0 } = await this._service.getAlbumLikes(albumId);
+    const response = h.response({
+      status: 'success',
+      data: {
+        likes: likes.length,
+      },
+    });
+    response.code(200);
+
+    if (isCache) response.header('X-Data-Source', 'cache');
+    return response;
+  }
 }
 
 module.exports = AlbumsHandler;

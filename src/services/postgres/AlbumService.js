@@ -1,11 +1,13 @@
 const { Pool } = require('pg');
 const { nanoid } = require('nanoid');
+const { mapUserAlbumLikesDBToModel } = require('../../utils');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 
 class AlbumService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
+    this._cacheService = cacheService;
   }
 
   async addAlbum({ name, year }) {
@@ -98,6 +100,74 @@ class AlbumService {
 
     if (!result.rowCount) {
       throw new Error('Failed to update album cover');
+    }
+  }
+
+  async addAlbumLikes(albumId, userId) {
+    const query = {
+      text: 'SELECT * FROM album_likes WHERE album_id = $1 AND user_id = $2',
+      values: [albumId, userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      await this.doLikeAlbum(albumId, userId);
+      await this._cacheService.delete(`album:${albumId}:likes`);
+    } else {
+      throw new InvariantError('User has already liked this album');
+    }
+  }
+
+  async doLikeAlbum(albumId, userId) {
+    const id = `like-${nanoid(16)}`;
+    const query = {
+      text: 'INSERT INTO album_likes(id, user_id, album_id) VALUES($1, $2, $3) RETURNING id',
+      values: [id, userId, albumId],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new InvariantError('Failed to like album');
+    }
+  }
+
+  async doUnlikeAlbum(albumId, userId) {
+    const query = {
+      text: 'DELETE FROM album_likes WHERE album_id = $1 AND user_id = $2 RETURNING id',
+      values: [albumId, userId],
+    };
+    const result = await this._pool.query(query);
+    await this._cacheService.delete(`album:${albumId}:likes`);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Failed to unlike album');
+    }
+  }
+
+  async getAlbumLikes(albumId) {
+    try {
+      const result = await this._cacheService.get(`album:${albumId}:likes`);
+
+      return {
+        likes: JSON.parse(result),
+        isCache: 1,
+      };
+    } catch (error) {
+      const query = {
+        text: 'SELECT * FROM album_likes WHERE album_id = $1',
+        values: [albumId],
+      };
+      const result = await this._pool.query(query);
+      const mappedResult = result.rows.map(mapUserAlbumLikesDBToModel);
+
+      await this._cacheService.set(
+        `album:${albumId}:likes`,
+        JSON.stringify(mappedResult),
+      );
+
+      return {
+        likes: mappedResult,
+      };
     }
   }
 }
