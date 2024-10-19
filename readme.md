@@ -17,7 +17,7 @@ Before running this project, make sure you have installed:
    
 2. **Install dependencies**:
 
-        ```sh
+   ```sh
     npm install
     ```
 3. **Database configuration**:
