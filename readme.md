@@ -42,21 +42,15 @@ Before running this project, make sure you have installed:
 4. **Run database migration**:
 
     ```sh
-    npm run migrate up || npx run migrate up
+    npm run migrate up
     ```
 
 5. **Run server**:
 
-    To start the producer server:
+    To start the server:
 
     ```sh
-    npm run start-producer
-    ```
-
-    To start the consumer server:
-
-    ```sh
-    npm run start-consumer
+    npm run dev
     ```
 
 6. **Linting code**:
@@ -64,5 +58,5 @@ Before running this project, make sure you have installed:
     To ensure your code is free from linting issues, run:
 
     ```sh
-    npx eslint .
+    npm run lint
     ```
