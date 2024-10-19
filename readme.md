@@ -1,37 +1,68 @@
-# OpenMusic API Versi 1
+# OpenMusic API
 
-## Deskripsi
+OpenMusic API is a RESTful API project for managing albums, songs, users, playlists, collaborations, exports, likes, and authentications using Hapi.js, PostgreSQL, RabbitMQ, Redis, and ESLint for code linting.
 
-Proyek ini dibangun sebagai proyek pertama di kelas [Belajar Fundamental Aplikasi Back-End](https://www.dicoding.com/academies/271) oleh Dicoding Academy.
+## Precondition
 
-## Kriteria
+Before running this project, make sure you have installed:
 
-- Pengelolaan Data Album.
-- Pengelolaan Data Song.
-- Menerapkan Data Validation.
-- Penanganan Eror (Error Handling).
-- Menggunakan Database dalam Menyimpan Data album dan lagu.
+- Node.js
+- PostgreSQL
+- Redis
+- RabbitMQ
 
-## Kriteria Tambahan (Opsional)
-
-1. (Opsional) Memunculkan daftar lagu di dalam detail album.
-2. (Opsional) Menerapkan query parameter untuk pencarian lagu pada endpoint **GET /songs**.
-    - ```?title```: mencari lagu berdasarkan judul lagu.
-    - ```?performer```: mencari lagu berdasarkan performer.
-
-## Jalankan di Lokal
+## Run locally
 
 1. Clone repository.
-2. Install dependencies dengan menjalankan perintah ```npm install```.
-3. Atur setting environtment sesuai format pada file ```.env.example```.
-<<<<<<< HEAD
-4. Gunakan perintah ```npm run start``` untuk menjalankan di lokal.
-=======
-4. Gunakan perintah ```npm run start``` untuk menjalankan di lokal.
+   
+2. **Install dependencies**:
 
-## Informasi
+        ```sh
+    npm install
+    ```
+3. **Database configuration**:
+   
+   Make sure PostgreSQL is running and create a database named `AlbumsAndSongs`. Then adjust the `.env` file to your
+   database settings:
 
-Rating : ⭐⭐⭐⭐⭐
+    ```plaintext
+    PGUSER=<YOUR_DB_USER>
+    PGPASSWORD=<YOUR_DB_PASSWORD>
+    PGDATABASE=AlbumsAndSongs
+    PGHOST=localhost
+    PGPORT=5432
+    ACCESS_TOKEN_KEY=your_access_token_secret_key
+    REFRESH_TOKEN_KEY=your_refresh_token_secret_key
+    ACCESS_TOKEN_AGE=3600
+    RABBITMQ_SERVER=amqp://localhost
+    REDIS_SERVER=localhost
+    REDIS_PORT=6379
+    ```
+    
+4. **Run database migration**:
 
-Dokumen Pendukung : [Sertifikat](https://www.dicoding.com/certificates/4EXGKQNW1ZRL)
->>>>>>> parent of 310eafa (FInal commit)
+    ```sh
+    npm run migrate up || npx run migrate up
+    ```
+
+5. **Run server**:
+
+    To start the producer server:
+
+    ```sh
+    npm run start-producer
+    ```
+
+    To start the consumer server:
+
+    ```sh
+    npm run start-consumer
+    ```
+
+6. **Linting code**:
+
+    To ensure your code is free from linting issues, run:
+
+    ```sh
+    npx eslint .
+    ```
