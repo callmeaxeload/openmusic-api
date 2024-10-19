@@ -2,6 +2,8 @@
 
 OpenMusic API is a RESTful API project for managing albums, songs, users, playlists, collaborations, exports, likes, and authentications using Hapi.js, PostgreSQL, RabbitMQ, Redis, and ESLint for code linting.
 
+Consumer project --> [Open Music Consumer](https://github.com/callmeaxeload/openmusic-queue-consumer)
+
 ## Precondition
 
 Before running this project, make sure you have installed:
